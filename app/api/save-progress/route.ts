@@ -19,7 +19,8 @@ export async function POST(request: Request) {
       const fileContent = await fs.readFile(filePath, 'utf-8')
       progress = JSON.parse(fileContent)
     } catch (error) {
-      // File doesn't exist or is empty, start with an empty array
+      // File doesn't exist or is empty, return an empty array
+      console.log('No progress data found, returning empty array', error)
     }
 
     progress.push({
@@ -46,7 +47,7 @@ export async function GET() {
       progress = JSON.parse(fileContent)
     } catch (error) {
       // File doesn't exist or is empty, return an empty array
-      console.log('No progress data found, returning empty array')
+      console.log('No progress data found, returning empty array', error)
     }
     return NextResponse.json(progress)
   } catch (error) {

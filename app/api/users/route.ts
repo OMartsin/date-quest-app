@@ -13,7 +13,8 @@ export async function POST(request: Request) {
       const fileContent = await fs.readFile(filePath, 'utf-8')
       users = JSON.parse(fileContent)
     } catch (error) {
-      // File doesn't exist or is empty, start with an empty array
+      // File doesn't exist or is empty, return an empty array
+      console.log('No users found, returning empty array', error)
     }
 
     const newUser = {
@@ -39,7 +40,7 @@ export async function GET() {
       users = JSON.parse(fileContent)
     } catch (error) {
       // File doesn't exist or is empty, return an empty array
-      console.log('No users found, returning empty array')
+      console.log('No users found, returning empty array', error)
     }
     return NextResponse.json(users)
   } catch (error) {

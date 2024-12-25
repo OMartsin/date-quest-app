@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Quest from '@/components/Quest'
 
@@ -17,17 +17,7 @@ export default function QuestPage({ params }: { params: { stepId: string } }) {
   const [userId, setUserId] = useState<string | null>(null)
   const router = useRouter()
 
-  useEffect(() => {
-    const storedUserId = localStorage.getItem('userId')
-    if (!storedUserId) {
-      router.push('/user-registration')
-    } else {
-      setUserId(storedUserId)
-      fetchStep()
-    }
-  }, [params.stepId, router])
-
-  const fetchStep = async () => {
+  const fetchStep = useCallback(async () => {
     try {
       const response = await fetch('/api/save-steps')
       if (!response.ok) {
@@ -46,7 +36,17 @@ export default function QuestPage({ params }: { params: { stepId: string } }) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.stepId, router])
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId')
+    if (!storedUserId) {
+      router.push('/user-registration')
+    } else {
+      setUserId(storedUserId)
+      fetchStep()
+    }
+  }, [fetchStep, router])
 
   const onStepStart = async (stepId: string) => {
     console.log(`User ${userId} started step ${stepId}`)
@@ -66,4 +66,3 @@ export default function QuestPage({ params }: { params: { stepId: string } }) {
     </div>
   )
 }
-

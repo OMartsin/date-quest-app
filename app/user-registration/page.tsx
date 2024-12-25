@@ -35,12 +35,12 @@ export default function UserRegistration() {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Реєстрація(а ти що думаєш, магія працює анонімно чи що)</h1>
       <form onSubmit={handleSubmit}>
-        <Label htmlFor="name">Твоє ім'я?</Label>
+        <Label htmlFor="name">Твоє ім&#39;я?</Label>
         <Input
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Введіть ім'я"
+          placeholder="Введіть ім&#39;я"
           required
         />
         <Button type="submit" className="mt-2">Почати подорож✨</Button>
