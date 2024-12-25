@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const steps = await request.json();
     const db = await getDb();
     const collection = db.collection('steps');
-
+    await collection.deleteMany({});
     await collection.insertMany(steps);
     return NextResponse.json({ message: 'Steps saved successfully' });
   } catch (error) {
