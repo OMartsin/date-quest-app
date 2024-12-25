@@ -22,7 +22,12 @@ export default function QuestPage(props: { params: Params }) {
 
   const fetchStep = useCallback(async () => {
     try {
-      const response = await fetch('/api/save-steps')
+      const response = await fetch('/api/save-steps',{
+        method: "GET",
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        },
+      })
       if (!response.ok) {
         throw new Error('Failed to fetch steps')
       }

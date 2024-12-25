@@ -41,7 +41,12 @@ export default function AdminPage() {
 
   const fetchSteps = async () => {
     try {
-      const response = await fetch('/api/save-steps')
+      const response = await fetch('/api/save-steps', {
+        method: "GET",
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        },
+      })
       if (!response.ok) {
         throw new Error('Failed to fetch steps')
       }
@@ -54,7 +59,12 @@ export default function AdminPage() {
 
   const fetchProgress = async () => {
     try {
-      const response = await fetch('/api/save-progress')
+      const response = await fetch('/api/save-progress',{
+        method: "GET",
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        },
+      })
       if (!response.ok) {
         throw new Error('Failed to fetch progress')
       }
@@ -68,7 +78,12 @@ export default function AdminPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('/api/users')
+      const response = await fetch('/api/users',{
+        method: "GET",
+        headers: {
+          'ngrok-skip-browser-warning': 'true',
+        },
+      })
       if (!response.ok) {
         throw new Error('Failed to fetch users')
       }
@@ -116,6 +131,7 @@ export default function AdminPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
         },
         body: JSON.stringify(updatedSteps),
       })
