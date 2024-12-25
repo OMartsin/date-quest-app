@@ -10,7 +10,13 @@ interface Step {
   description: string
 }
 
-export default function QuestPage({ params }: { params: { stepId: string } }) {
+interface PageProps {
+  params: {
+    stepId: string
+  }
+}
+
+export default function QuestPage({ params }: PageProps) {
   const [step, setStep] = useState<Step | null>(null)
   const [isLastStep, setIsLastStep] = useState(false)
   const [loading, setLoading] = useState(true)
