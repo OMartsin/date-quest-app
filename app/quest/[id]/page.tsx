@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import {useState, useEffect, useCallback, use} from 'react'
 import { useRouter } from 'next/navigation'
 import Quest from '@/components/Quest'
 
@@ -10,13 +10,10 @@ interface Step {
   description: string
 }
 
-interface PageProps {
-  params: {
-    stepId: string
-  }
-}
+type Params = Promise<{ id: string }>
 
-export default function QuestPage({ params }: PageProps) {
+export default function QuestPage(props: { params: Params }) {
+  const params = use(props.params);
   const [step, setStep] = useState<Step | null>(null)
   const [isLastStep, setIsLastStep] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -30,7 +27,7 @@ export default function QuestPage({ params }: PageProps) {
         throw new Error('Failed to fetch steps')
       }
       const steps: Step[] = await response.json()
-      const currentStepIndex = steps.findIndex(s => s.id === params.stepId)
+      const currentStepIndex = steps.findIndex(s => s.id === params.id)
       if (currentStepIndex !== -1) {
         setStep(steps[currentStepIndex])
         setIsLastStep(currentStepIndex === steps.length - 1)
@@ -42,7 +39,7 @@ export default function QuestPage({ params }: PageProps) {
     } finally {
       setLoading(false)
     }
-  }, [params.stepId, router])
+  }, [params.id, router])
 
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId')
@@ -54,8 +51,8 @@ export default function QuestPage({ params }: PageProps) {
     }
   }, [fetchStep, router])
 
-  const onStepStart = async (stepId: string) => {
-    console.log(`User ${userId} started step ${stepId}`)
+  const onStepStart = async (id: string) => {
+    console.log(`User ${userId} started step ${id}`)
   }
 
   if (loading) {
@@ -67,8 +64,8 @@ export default function QuestPage({ params }: PageProps) {
   }
 
   return (
-    <div className="p-4">
-      <Quest step={step} isLastStep={isLastStep} userId={userId} onStepStart={onStepStart} />
-    </div>
+      <div className="p-4">
+        <Quest step={step} isLastStep={isLastStep} userId={userId} onStepStart={onStepStart} />
+      </div>
   )
 }
