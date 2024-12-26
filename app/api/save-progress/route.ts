@@ -14,6 +14,18 @@ export async function POST(request: Request) {
     const db = await getDb();
     const collection = db.collection('progress');
 
+    const lastProgress = await collection
+        .find({ userId })
+        .sort({ timestamp: -1 })
+        .limit(1)
+        .toArray();
+
+    if (lastProgress.length > 0 && lastProgress[0].stepId === stepId) {
+      return NextResponse.json({
+        message: 'This step is already the latest progress for the user',
+      });
+    }
+
     const newProgress: ProgressEntry = {
       userId,
       stepId,
