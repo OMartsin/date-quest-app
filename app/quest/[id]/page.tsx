@@ -32,6 +32,7 @@ export default function QuestPage(props: { params: Params }) {
         throw new Error('Failed to fetch steps')
       }
       const steps: Step[] = await response.json()
+      steps.sort((a, b) => a.name.localeCompare(b.name))
       const currentStepIndex = steps.findIndex(s => s.id === params.id)
       if (currentStepIndex !== -1) {
         setStep(steps[currentStepIndex])
